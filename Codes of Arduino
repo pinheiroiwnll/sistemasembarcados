@@ -1,0 +1,97 @@
+void setup()
+{
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(2, HIGH);
+  digitalWrite(11, HIGH);
+  delay(4000); 
+  digitalWrite(2, LOW);
+  digitalWrite(11, LOW);
+  
+  digitalWrite(10, HIGH);
+  delay(1000);
+  digitalWrite(10, LOW);
+  
+  digitalWrite(3, HIGH);
+  digitalWrite(9, HIGH);
+  delay(4000); 
+  digitalWrite(3, LOW);
+  digitalWrite(9, LOW);
+  
+}
+
+int led = 11; // valor inicial de qual led deverá acender, será incrementado ao ser chamada interrupção
+  
+  
+void interrupcao(){
+  
+  digitalWrite(11,LOW);
+  digitalWrite(12,LOW);
+  digitalWrite(13,LOW);
+  delay(100);
+  
+  digitalWrite(led,HIGH);
+  led=led+1;
+    if (led>13) {
+      led=11;
+    }
+  delay(300);
+}
+  void setup(){
+  
+  pinMode (11,OUTPUT);
+  pinMode (12,OUTPUT);
+  pinMode (13,OUTPUT);
+  pinMode (2, INPUT_PULLUP);
+  delay(500);
+  attachInterrupt(0,interrupcao,RISING); //Configurando a interrupção
+  }
+
+  void loop(){
+    }
+  
+  #include <EEPROM.h>
+
+int valor_lido;
+
+int numero = 10000;
+int endereco = 0;
+
+void setup()
+{
+Serial.begin(9600);
+}
+
+void loop()
+{
+  byte hiByte_numero = highByte(numero);
+  byte loByte_numero = lowByte(numero);
+  
+  EEPROM.write(endereco, hiByte_numero);
+  
+  EEPROM.write(endereco + 1, loByte_numero);
+  
+  delay(100);
+  
+  
+  byte hiByte = EEPROM.read(endereco);
+  byte loByte = EEPROM.read(endereco+1);
+  valor_lido = word(hiByte, loByte);
+  
+  Serial.print("Endereço: ");
+  Serial.print(endereco);
+  Serial.print("/t");
+  Serial.print("Número:");
+  Serial.println(valor_lido);
+  Serial.println(""); 
+  
+  delay(1000);
+  
+}
